@@ -1,10 +1,7 @@
 package com.slashcs.students;
 
 import com.github.javafaker.Faker;
-import com.slashcs.students.model.Book;
-import com.slashcs.students.model.Course;
-import com.slashcs.students.model.Student;
-import com.slashcs.students.model.StudentIdCard;
+import com.slashcs.students.model.*;
 import com.slashcs.students.repository.BookRepository;
 import com.slashcs.students.repository.StudentIdCardRepository;
 import com.slashcs.students.repository.StudentRepository;
@@ -68,10 +65,10 @@ public class StudentsApplication {
             student.addBook(book2);
             student.addBook(book3);
 
-            student.enrollCourse(course1);
-            student.enrollCourse(course1);
-            student2.enrollCourse(course2);
-            student2.enrollCourse(course1);
+
+            // student.addEnrollments(new Enrollment(student, course1));
+//            student2.enrollCourse(course2);
+//            student2.enrollCourse(course1);
 
             studentIdCardRepository.save(cardId1);
            // studentIdCardRepository.save(cardId2);

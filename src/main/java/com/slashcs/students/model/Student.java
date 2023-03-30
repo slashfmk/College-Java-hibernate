@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity(name = "Student")
+@Table(name = "student")
 public class Student {
 
     @Id
@@ -85,22 +86,11 @@ public class Student {
     )
     private List<Book> books = new ArrayList<>();
 
-    @ManyToMany(
+    @OneToMany(
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            fetch = FetchType.LAZY
+            mappedBy = "student"
     )
-    @JoinTable(
-            name = "enrollment",
-            joinColumns = @JoinColumn(
-                    name = "student_id",
-                    foreignKey = @ForeignKey(name = "enrollment_student_id_fk")
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "course_id",
-                    foreignKey = @ForeignKey(name = "enrollment_course_id_fk")
-            )
-    )
-    private List<Course> courses = new ArrayList<>();
+    private List<Enrollment> enrollments = new ArrayList<>();
 
 
     public Student(String fName, String lastName, String username, String email, Date dob, String password) {
@@ -131,18 +121,21 @@ public class Student {
         }
     }
 
-    public void enrollCourse(Course course) {
-        if (!this.courses.contains(course)) {
-            this.courses.add(course);
-            course.getStudents().add(this);
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void addEnrollments(Enrollment enrollment) {
+
+        if (!this.enrollments.contains(enrollment)) {
+            this.enrollments.add(enrollment);
+            enrollment.setStudent(this);
+            ;
         }
     }
 
-    public void unrollCourse(Course course) {
-        if (this.courses.contains(course)) {
-            this.courses.remove(course);
-            course.getStudents().remove(this);
-        }
+    public void removeEnrollments(Enrollment enrollment) {
+        this.enrollments.remove(enrollment);
     }
 
     public List<Book> getBooks() {

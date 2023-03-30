@@ -1,10 +1,14 @@
 package com.slashcs.students.model;
 
 
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.slashcs.students.composite.EnrollmentId;
 import jakarta.persistence.*;
 
-@Entity(name = "enrollment")
+import java.time.LocalDateTime;
+import java.util.Date;
+
+@Entity(name = "Enrollment")
 @Table(name = "enrollment")
 public class Enrollment {
 
@@ -21,12 +25,36 @@ public class Enrollment {
     @JoinColumn(name = "course_id")
     private Course course;
 
+    @Column(
+            nullable = false,
+            updatable = false,
+            columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
+    )
+    private LocalDateTime createdAt;
+
     public Enrollment() {
+        this.createdAt = LocalDateTime.now();
     }
 
     public Enrollment(Student student, Course course) {
         this.student = student;
         this.course = course;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public Enrollment(EnrollmentId id, Student student, Course course) {
+        this.id = id;
+        this.student = student;
+        this.course = course;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Student getStudent() {

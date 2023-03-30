@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity(name = "Course")
+@Table(name = "course")
 public class Course {
 
     @Id
@@ -42,15 +43,32 @@ public class Course {
     )
     private String department;
 
-    @ManyToMany(
-            mappedBy = "courses"
+    @OneToMany(
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            mappedBy = "course"
     )
-    private List<Student> students = new ArrayList<>();
+    private List<Enrollment> enrollments = new ArrayList<>();
 
 
     public Course(String name, String department) {
         this.name = name;
         this.department = department;
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void addEnrollments(Enrollment enrollment) {
+
+        if (!this.enrollments.contains(enrollment)) {
+            this.enrollments.add(enrollment);
+            enrollment.setCourse(this);
+        }
+    }
+
+    public void removeEnrollments(Enrollment enrollment) {
+        this.enrollments.remove(enrollment);
     }
 
 
@@ -59,7 +77,7 @@ public class Course {
         return "Course{" +
                 "name='" + name + '\'' +
                 ", department='" + department + '\'' +
-                ", students=" + students +
+                ", enrollments=" + enrollments +
                 '}';
     }
 }

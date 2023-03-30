@@ -73,13 +73,12 @@ public class StudentsApplication {
             student2.enrollCourse(course2);
             student2.enrollCourse(course1);
 
-
             studentIdCardRepository.save(cardId1);
            // studentIdCardRepository.save(cardId2);
 
             studentRepository.findById(1L)
                     .ifPresent(System.out::println);
-// System.out.println(student);
+            // System.out.println(student);
             //  studentRepository.deleteById(1L);
 
         };
